@@ -1,0 +1,1 @@
+/usr/pgsql-$PG_VERSION/bin/postgres --config_file=/etc/pgsql/postgresql.conf --hba_file=/etc/pgsql/pg_hba.conf --ident_file=/etc/pgsql/pg_ident.conf $PG_OPTS --unix_socket_directories=""

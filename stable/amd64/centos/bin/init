@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+#
+#
+# Initialize anonymous user (openshift service account)
+#
+if ! whoami &> /dev/null; then
+    if [ -w /etc/passwd ]; then
+        echo "${USER_NAME:-svcacct}:x:$(id -u):0:${USER_NAME:-svcacct} user:${HOME}:/sbin/nologin" >> /etc/passwd
+    fi
+fi
+#
+# Initialize empty configuration volume mounts (/var/lib/pgsql)
+#
+if ! [ -e /var/lib/pgsql/.has_init_mount ]; then
+    tar -xpf var-lib-pgsql.tar -C /var/lib/pgsql/;
+    touch /var/lib/pgsql/.has_init_mount;
+fi
+if ! [ -e /var/lib/pgsql/.has_init_cluster ]; then
+    echo $POSTGRESQL_PASSWORD > pg_passwd && initdb --encoding=UTF-8 --locale=en_US.UTF-8 -U $POSTGRESQL_USER --pwfile=pg_passwd &&  rm pg_passwd;
+    touch /var/lib/pgsql/.has_init_cluster;
+fi
+#
+# Create local ephemeral directory for temporaray statistics file, to avoid erros caused by glusterfs latency
+#
+mkdir -p /var/tmp/pgsql
+#
+# Start the postgresql server and keep it in foreground
+#
+exec "$@";
