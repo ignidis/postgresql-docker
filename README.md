@@ -1,5 +1,6 @@
-# postgresql-docker
- This is a posgresql image that provides a containarized RDBMS service.
- 
- It can run a single Database or multiple depending on your configuration.
- It has been specially configured to run in an openshift environment, but a regular docker host would work too.
+# This is the CYBEARTH BRANCH of this project
+
+Here you will encounter special variations of the master branch tailored for my personal use.
+
+This branch adds external volumes for the configuration and the dbroot, additional modules and components that specialize the image for MY environment.
+Feel free to look around.
